@@ -228,20 +228,12 @@ func (a *App) renderHTML(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) serviceStatus() []statusItem {
-	cacheValue := "disabled"
-	cacheDetail := "cache is turned off in config"
-	if a.config.EnableCache {
-		cacheValue = "enabled"
-		cacheDetail = a.cacheDir()
-	}
 
 	return []statusItem{
 		{Name: "HTTP Service", Value: "Running", Detail: "server is accepting requests", OK: true},
 		{Name: "Route Rule", Value: "strict", Detail: "only GET /?t={msg} returns mp3", OK: true},
 		{Name: "Output Format", Value: "audio/mpeg", Detail: "response returns mp3 bytes", OK: true},
 		{Name: "Voice", Value: a.voice(), Detail: "supports Chinese input and voice", OK: true},
-		{Name: "Config File", Value: "config.yaml", Detail: "port and title are loaded from yaml", OK: true},
-		{Name: "Cache", Value: cacheValue, Detail: cacheDetail, OK: true},
 	}
 }
 
@@ -423,11 +415,9 @@ var htmlPage = template.Must(template.New("index").Parse(`<!doctype html>
       <h2>基础信息</h2>
       <div class="grid">
         <div class="item"><strong>监听地址</strong><br><code>{{.Addr}}</code></div>
-        <div class="item"><strong>默认语音</strong><br><code>{{.Voice}}</code></div>
         <div class="item"><strong>启动时间</strong><br><code>{{.StartedAt}}</code></div>
         <div class="item"><strong>运行时长</strong><br><code>{{.Uptime}}</code></div>
         <div class="item"><strong>当前时间</strong><br><code>{{.CurrentTime}}</code></div>
-        <div class="item"><strong>客户端</strong><br><code>{{.ClientIP}}</code></div>
       </div>
     </div>
 
